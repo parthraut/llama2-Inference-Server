@@ -1,0 +1,3 @@
+[submodule "Llama-2-Open-Source-LLM-CPU-Inference"]
+	path = Llama-2-Open-Source-LLM-CPU-Inference
+	url = https://github.com/kennethleungty/Llama-2-Open-Source-LLM-CPU-Inference.git
