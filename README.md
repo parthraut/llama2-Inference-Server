@@ -1,78 +1,76 @@
 # llama2-Inference-Server
 
-## Overview
-This lightweight inference server accepts HTTP requests whose payload includes inference input data, runs inference on that data using a Large Language Model (LLM), and responds with the inference results. This server currently supports Llama 2, but can be easily expanded to support other models. 
+## Introduction
+The llama2-Inference-Server is a lightweight, versatile inference server designed to streamline the deployment of Large Language Models (LLMs), specifically tailored for Llama 2. It facilitates easy integration of LLMs into various applications by accepting HTTP requests for inference tasks and returning prompt results.
 
-### Using the Server, An Example
+## Prerequisites
+Before you begin, ensure you have the following installed:
+- Python 3.8 or later
+- Docker (for Docker-based setup)
+- pip and virtualenv
 
-Send a request to the server. In this example, we are requesting the llama2-7b model and send the message "What is the meaning of life?"
+## Installation
+
+### Local Installation
+
+#### Setting up the Environment
+1. Clone the repository to your local machine.
+2. Navigate to the project's root directory.
+
+#### Launching the Main Server
+1. Change directory to `src/`:
+    ```sh
+    cd src/
+    ```
+2. Set up a Python virtual environment and activate it:
+    ```sh
+    python3 -m venv env
+    source env/bin/activate
+    ```
+3. Install the required dependencies:
+    ```sh
+    pip install -r requirements.txt
+    ```
+4. Start the server using `run.sh`:
+    ```sh
+    sh run.sh
+    ```
+
+#### Launching the Inference Server
+1. Open a new terminal and navigate to the `Llama-2-Open-Source-LLM-CPU-Inference` directory.
+2. Repeat the steps to set up a Python virtual environment and activate it.
+3. Install dependencies and start the server as described above.
+
+### Docker Installation
+
+#### Configuration
+- Adjust the `register.json` file to ensure proper network communication between containers:
+    ```json
+    {
+        "llama2-7b": {
+            "endpoint": "http://llama2:5000/inference",
+            "required": ["message"]
+        }
+    }
+    ```
+- Modify all `run.sh` files to launch services on `0.0.0.0`.
+
+#### Building and Running
+1. Build the Docker images:
+    ```sh
+    docker-compose build
+    ```
+2. Start the containers:
+    ```sh
+    docker-compose up
+    ```
+
+## Usage
+To interact with the server, send a JSON-formatted HTTP request as follows:
 
 ```sh
 curl http://localhost:3000/completion -H 'Content-Type: application/json' -d '{"model": "llama2-7b", "message": "What is the meaning of life?"}'
-```
 
-It will respond:
-
-```json
-{
-  "query": "what is the meaning of life?",
-  "result": "The meaning of life is to find purpose and fulfillment through our experiences, relationships, and contributions to society.",
-  "time": 53.06127202400239
-}
-```
-## Running the Server
-
-There are two options to run the server, either locally or using Docker. 
-
-### Local Run
-
-Ensure the run.sh file in the src/ directory launches the server to listen on 127.0.0.1:3000 and the run.sh file in /Llama-2-Open-Source-LLM-CPU-Inference launches the server to listen on 127.0.0.1:5000
-
-Ensure the endpoint of llama2 is set correctly in register.json.
-
-#### Launch the main server
-Open a terminal and cd to the src/ directory. Load all dependencies, then launch the server using run.sh
-
-```sh
-cd src/
-python3 -m venv env
-source env/bin/activate
-pip install -r requirements.txt
-sh run.sh
-```
-
-#### Launch the inference server
-Open a terminal and cd to the /Llama-2-Open-Source-LLM-CPU-Inference directory. Load all dependencies, then launch the server using run.sh
-
-```sh
-cd Llama-2-Open-Source-LLM-CPU-Inference/
-python3 -m venv env
-source env/bin/activate
-pip install -r requirements.txt
-sh run.sh
-```
-
-### Run with Docker
-
-Modify the endpoint of the server to network across different containers in register.json, as shown below:
-
-```json
-{
-    "llama2-7b" : {
-        "endpoint" : "http://llama2:5000/inference",
-        "required" : ["message"]
-    }
-}
-```
-
-Ensure all run.sh files launch on 0.0.0.0. 
-
-Build and Launch:
-
-```sh
-docker-compose build
-docker-compose up
-```
 
 ## Use Another Model
 
