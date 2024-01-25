@@ -5,13 +5,13 @@ This lightweight inference server accepts HTTP requests whose payload includes i
 
 ### Using the Server, An Example
 
-Send a request to the server. In this example, we are requesting the llama2-7b model and send the message "What is the meaning of life?":
+Send a request to the server. In this example, we are requesting the llama2-7b model and send the message "What is the meaning of life?"
 
 ```sh
-  curl http://localhost:3000/completion -H 'Content-Type: application/json' -d '{"model": "llama2-7b", "message": "What is the meaning of life?"}'
+curl http://localhost:3000/completion -H 'Content-Type: application/json' -d '{"model": "llama2-7b", "message": "What is the meaning of life?"}'
 ```
 
-It will respond with: "The meaning of life is to find purpose and fulfillment through our experiences, relationships, and contributions to society."
+It will respond:
 
 ```json
 {
@@ -20,6 +20,67 @@ It will respond with: "The meaning of life is to find purpose and fulfillment th
   "time": 53.06127202400239
 }
 ```
+## Running the Server
+
+There are two options to run the server, either locally or using Docker. 
+
+### Local Run
+
+Ensure the run.sh file in the src/ directory launches the server to listen on 127.0.0.1:3000 and the run.sh file in /Llama-2-Open-Source-LLM-CPU-Inference launches the server to listen on 127.0.0.1:5000
+
+Ensure the endpoint of llama2 is set correctly in register.json.
+
+#### Launch the main server
+Open a terminal and cd to the src/ directory. Load all dependencies, then launch the server using run.sh
+
+```sh
+cd src/
+python3 -m venv env
+source env/bin/activate
+pip install -r requirements.txt
+sh run.sh
+```
+
+#### Launch the inference server
+Open a terminal and cd to the /Llama-2-Open-Source-LLM-CPU-Inference directory. Load all dependencies, then launch the server using run.sh
+
+```sh
+cd Llama-2-Open-Source-LLM-CPU-Inference/
+python3 -m venv env
+source env/bin/activate
+pip install -r requirements.txt
+sh run.sh
+```
+
+### Run with Docker
+
+Modify the endpoint of the server to network across different containers in register.json, as shown below:
+
+```json
+{
+    "llama2-7b" : {
+        "endpoint" : "http://llama2:5000/inference",
+        "required" : ["message"]
+    }
+}
+```
+
+Ensure all run.sh files launch on 0.0.0.0. 
+
+Build and Launch:
+
+```sh
+docker-compose build
+docker-compose up
+```
+
+## Use Another Model
+
+Expanding the server to support new models is easy! To add another model to the server, modify the register.json to include the endpoint and required fields for the new inference model. The new model will recieve a json containing all required fields, and must respond with a json with the response.
+
+
+
+
 
 
 
