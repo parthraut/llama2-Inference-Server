@@ -1,5 +1,30 @@
 # llama2-Inference-Server
 
+## Overview
+This lightweight inference server accepts HTTP requests whose payload includes inference input data, runs inference on that data using a Large Language Model (LLM), and responds with the inference results. This server currently supports Llama 2, but can be easily expanded to support other models. 
+
+### Using the Server, An Example
+
+Send a request to the server. In this example, we are requesting the llama2-7b model and send the message "What is the meaning of life?":
+
+```sh
+  curl http://localhost:3000/completion -H 'Content-Type: application/json' -d '{"model": "llama2-7b", "message": "What is the meaning of life?"}'
+```
+
+It will respond with: "The meaning of life is to find purpose and fulfillment through our experiences, relationships, and contributions to society."
+
+```json
+{
+  "query": "what is the meaning of life?",
+  "result": "The meaning of life is to find purpose and fulfillment through our experiences, relationships, and contributions to society.",
+  "time": 53.06127202400239
+}
+```
+
+
+
+
+
 ## Internship Quest
 
 Your goal is to implement **a CPU inference server for Llama 2**.
