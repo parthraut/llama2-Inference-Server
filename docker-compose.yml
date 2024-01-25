@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  server:
+    build: src/
+    ports:
+      - "3000:3000"
+    networks:
+      - inference_network
+
+  llama2:
+    build: Llama-2-Open-Source-LLM-CPU-Inference/
+    networks:
+      - inference_network
+
+networks:
+  inference_network:
